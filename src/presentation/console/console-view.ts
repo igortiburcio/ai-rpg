@@ -1,48 +1,33 @@
-import readline from 'readline';
 import { inject, injectable } from 'tsyringe';
 import { IStringColorFiller } from '../../application/string-collor-filler/contracts/string-color-filler.interface';
+import InputHandler from '../../application/input-handler/input-handler';
 
 @injectable()
 export class ConsoleView {
-  constructor(@inject('IStringColorFiller') private stringColorFiller: IStringColorFiller) {}
+  constructor(
+    @inject('IStringColorFiller') private stringColorFiller: IStringColorFiller,
+    @inject('InputHandler') private inputHandler: InputHandler,
+  ) {}
 
-  public start() {
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
+  public start(): void {
     console.clear();
 
     console.log(`${this.stringColorFiller.green('Bem-vindo ao RPG AI!')}`);
-    console.log(`${this.stringColorFiller.blue('Digite "sair" ou "exit" para sair.')}`);
-    rl.prompt(true);
+    console.log(`${this.stringColorFiller.blue('Digite "sair" ou "exit" para sair.')}\n`);
 
-    rl.on('line', (line) => {
-      if (line === 'sair' || line === 'exit') {
-        rl.close();
-        process.exit(0);
-      }
+    this.inputHandler.initialize();
+    this.inputHandler.subscribe({
+      onInput: (input: string) => {
+        console.log(`${this.stringColorFiller.yellow('> AI:')} TESTANDO\n`);
 
-      const text = line.trim();
-
-      if (text === '') {
-        rl.prompt(true);
-        return;
-      }
-
-      readline.moveCursor(process.stdout, 0, -1);
-      readline.clearLine(process.stdout, 0);
-
-      console.log(`${this.stringColorFiller.purple('> Você:')} ${text}\n`);
-      console.log(`${this.stringColorFiller.yellow('> AI:')} TESTANDO\n`);
-
-      rl.prompt(true);
+        return true;
+      },
+      onExit: () => {
+        console.log(`${this.stringColorFiller.red('Saindo...')}`);
+      },
+      getPriority: () => 1,
     });
 
-    rl.on('close', () => {
-      console.log(`${this.stringColorFiller.red('Saindo...')}`);
-      process.exit(0);
-    });
+    this.inputHandler.prompt();
   }
 }
