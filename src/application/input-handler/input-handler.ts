@@ -40,6 +40,10 @@ export default class InputHandler extends InputHandlerContract {
 
       console.log(`${this.stringColorFiller.purple('> Você:')} ${input}\n`);
 
+      if (input.toLowerCase() === 'sair' || input.toLowerCase() === 'exit') {
+        this.close();
+      }
+
       this.notifyObservers(input);
 
       this.rl?.prompt(true);
