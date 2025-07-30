@@ -18,6 +18,10 @@ export class ConsoleView {
     this.inputHandler.initialize();
     this.inputHandler.subscribe({
       onInput: (input: string) => {
+        if (input.toLowerCase() === 'sair' || input.toLowerCase() === 'exit') {
+          this.inputHandler.close();
+        }
+
         console.log(`${this.stringColorFiller.yellow('> AI:')} TESTANDO\n`);
 
         return true;
