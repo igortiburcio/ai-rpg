@@ -1,12 +1,12 @@
 import { inject, injectable } from 'tsyringe';
 import { IStringColorFiller } from '../../application/string-collor-filler/contracts/string-color-filler.interface';
-import InputHandler from '../../application/input-handler/input-handler';
+import InputHandlerContract from '../../application/input-handler/contracts/input-handler-contract';
 
 @injectable()
 export class ConsoleView {
   constructor(
     @inject('IStringColorFiller') private stringColorFiller: IStringColorFiller,
-    @inject('InputHandler') private inputHandler: InputHandler,
+    @inject('InputHandler') private inputHandler: InputHandlerContract,
   ) {}
 
   public start(): void {
