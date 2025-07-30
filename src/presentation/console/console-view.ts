@@ -1,6 +1,6 @@
 import readline from 'readline';
 import { inject, injectable } from 'tsyringe';
-import { IStringColorFiller } from '../../application/contracts/string-color-filler.interface';
+import { IStringColorFiller } from '../../application/string-collor-filler/contracts/string-color-filler.interface';
 
 @injectable()
 export class ConsoleView {
