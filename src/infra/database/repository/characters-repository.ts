@@ -14,34 +14,34 @@ export class CharactersRepository {
   public async create(character: { name: string; class: 'Warrior' | 'Rogue' | 'Mage' }) {
     const classData = this.baseClasses.getClass(character.class);
 
-    const [newCharacter] = await db
-      .insert(CharactersEntity)
-      .values({
-        name: character.name,
-        level: classData.level,
-        experience: classData.experience,
-        health: classData.health,
-        mana: classData.mana,
-        attack: classData.attack,
-        magicAttack: classData.magicAttack,
-        defense: classData.defense,
-        intelligence: classData.intelligence,
-        strength: classData.strength,
-        agility: classData.agility,
-        class: classData.name,
-      })
-      .returning();
+    await db.transaction(async (tx) => {
+      const [newCharacter] = await tx
+        .insert(CharactersEntity)
+        .values({
+          name: character.name,
+          level: classData.level,
+          experience: classData.experience,
+          health: classData.health,
+          mana: classData.mana,
+          attack: classData.attack,
+          magicAttack: classData.magicAttack,
+          defense: classData.defense,
+          intelligence: classData.intelligence,
+          strength: classData.strength,
+          agility: classData.agility,
+          class: classData.name,
+        })
+        .returning();
 
-    const spells = await db.select().from(SpellsEntity).where(inArray(SpellsEntity.name, classData.initialSpells));
+      const spells = await tx.select().from(SpellsEntity).where(inArray(SpellsEntity.name, classData.initialSpells));
 
-    await db.insert(CharacterSpellsEntity).values(
-      spells.map((spell) => ({
-        characterId: newCharacter.id,
-        spellId: spell.id,
-      })),
-    );
-
-    return { character: newCharacter };
+      await tx.insert(CharacterSpellsEntity).values(
+        spells.map((spell) => ({
+          characterId: newCharacter.id,
+          spellId: spell.id,
+        })),
+      );
+    });
   }
 
   public async getAll() {

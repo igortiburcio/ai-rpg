@@ -46,11 +46,11 @@ export default class CreateCharState extends GameStateContract {
 
   async render() {
     if (this.step === 0) {
-      console.log(this.stringColorFiller.green('Digite o nome do personagem:'));
+      console.log(this.stringColorFiller.blue('Digite o nome do personagem:'));
     }
 
     if (this.step === 1) {
-      console.log(this.stringColorFiller.green('Digite a classe do personagem (Warrior, Rogue ou Mage):'));
+      console.log(this.stringColorFiller.blue('Digite a classe do personagem (Warrior, Rogue ou Mage):'));
     }
   }
 }

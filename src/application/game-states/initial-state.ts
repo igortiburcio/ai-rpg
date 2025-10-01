@@ -43,8 +43,8 @@ export default class InitialState extends GameStateContract {
         ),
       );
 
-      characters.forEach((character) => {
-        console.log(this.stringColorFiller.purple(`${character.name} - ${character.class}`));
+      characters.forEach((character, index) => {
+        console.log(this.stringColorFiller.green(`${index + 1}. ${character.name} - ${character.class}\n`));
       });
     }
   }
