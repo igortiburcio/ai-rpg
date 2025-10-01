@@ -65,9 +65,9 @@ export default class InputHandler extends InputHandlerContract {
     if (index > -1) this.observers.splice(index, 1);
   }
 
-  private notifyObservers(input: string): void {
+  private async notifyObservers(input: string): Promise<void> {
     for (const observer of this.observers) {
-      if (observer.onInput(input)) {
+      if (await observer.onInput(input)) {
         break;
       }
     }

@@ -1,4 +1,5 @@
 import { BaseClassesInterface } from './contracts/base-classes-interface';
+import { injectable } from 'tsyringe';
 
 class InvalidClassNameError extends Error {
   code = 'INVALID_CLASS_NAME';
@@ -7,6 +8,7 @@ class InvalidClassNameError extends Error {
   }
 }
 
+@injectable()
 export default class BaseClasses implements BaseClassesInterface {
   getClass(className: 'Warrior' | 'Rogue' | 'Mage') {
     switch (className) {
@@ -34,7 +36,7 @@ export default class BaseClasses implements BaseClassesInterface {
       intelligence: 6,
       strength: 16,
       agility: 8,
-      initialSpells: ['Slash', 'Taunt'],
+      initialSpells: ['Slash', 'Stone Skin'],
     };
   }
 

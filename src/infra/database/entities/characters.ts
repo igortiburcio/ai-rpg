@@ -1,43 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
+import { CharacterSpellsEntity } from './character-spells';
 
-@Entity()
-export class Characters {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
-
-  @Column({ type: 'varchar', length: 100, nullable: false })
-  name!: string;
-
-  @Column({ type: 'int', nullable: false })
-  level!: number;
-
-  @Column({ type: 'int', nullable: false })
-  experience!: number;
-
-  @Column({ type: 'int', nullable: false })
-  health!: number;
-
-  @Column({ type: 'int', nullable: false })
-  mana!: number;
-
-  @Column({ type: 'int', nullable: false })
-  attack!: number;
-
-  @Column({ type: 'int', nullable: false })
-  magicAttack!: number;
-
-  @Column({ type: 'int', nullable: false })
-  defense!: number;
-
-  @Column({ type: 'int', nullable: false })
-  intelligence!: number;
-
-  @Column({ type: 'int', nullable: false })
-  strength!: number;
-
-  @Column({ type: 'int', nullable: false })
-  agility!: number;
-
-  @Column({ type: 'array', array: true, nullable: false })
-  initialSpells!: string[];
-}
+export const CharactersEntity = sqliteTable('characters', {
+  id: integer('id').primaryKey(),
+  name: text('name').notNull(),
+  level: integer('level').notNull(),
+  experience: integer('experience').notNull(),
+  health: integer('health').notNull(),
+  mana: integer('mana').notNull(),
+  attack: integer('attack').notNull(),
+  magicAttack: integer('magic_attack').notNull(),
+  defense: integer('defense').notNull(),
+  intelligence: integer('intelligence').notNull(),
+  strength: integer('strength').notNull(),
+  agility: integer('agility').notNull(),
+  class: text('class').notNull(),
+  characterSpells: integer('character_spells').references(() => CharacterSpellsEntity.id),
+});
