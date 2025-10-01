@@ -1,5 +1,4 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
-import { CharacterSpellsEntity } from './character-spells';
 
 export const CharactersEntity = sqliteTable('characters', {
   id: integer('id').primaryKey(),
@@ -15,5 +14,4 @@ export const CharactersEntity = sqliteTable('characters', {
   strength: integer('strength').notNull(),
   agility: integer('agility').notNull(),
   class: text('class').notNull(),
-  characterSpells: integer('character_spells').references(() => CharacterSpellsEntity.id),
 });

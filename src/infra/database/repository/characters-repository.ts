@@ -5,6 +5,7 @@ import { SpellsEntity } from '../entities/spells';
 import { inject } from 'tsyringe';
 import BaseClasses from '../../../core/base-classes';
 import { eq, inArray } from 'drizzle-orm';
+import { CharacterSpellsEntity } from '../entities/character-spells';
 
 @injectable()
 export class CharactersRepository {
@@ -33,10 +34,19 @@ export class CharactersRepository {
 
     const spells = await db.select().from(SpellsEntity).where(inArray(SpellsEntity.name, classData.initialSpells));
 
-    return { character: newCharacter, spells };
+    await db.insert(CharacterSpellsEntity).values(
+      spells.map((spell) => ({
+        characterId: newCharacter.id,
+        spellId: spell.id,
+      })),
+    );
+
+    return { character: newCharacter };
   }
 
   public async getAll() {
-    return await db.select().from(CharactersEntity);
+    const characters = await db.select().from(CharactersEntity);
+
+    return characters;
   }
 }
