@@ -38,6 +38,8 @@ export default class CreateCharState extends GameStateContract {
 
       await this.charactersRepository.create({ name: this.characterName, class: input });
 
+      this.step = 0;
+
       return GameStates.INITIAL;
     }
 
